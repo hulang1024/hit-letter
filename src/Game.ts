@@ -1,6 +1,24 @@
+import KeyboardHandler from "./input/KeyboardHandler";
+import KeyboardState from "./input/KeyboardState";
+import { InputKey } from "./input/keys";
+
 export default abstract class Game {
+  private KeyboardHandler: KeyboardHandler;
+  protected keyboardState: KeyboardState = new KeyboardState();
+
   constructor() {
     this.setupUpdateLoop();
+
+    this.KeyboardHandler = new KeyboardHandler({
+      onKeyDown: (key, event) => {
+        this.onKeyDown(key, event);
+        this.keyboardState.keys.setPressed(key, true);
+      },
+      onKeyUp: (key, event) => {
+        this.onKeyUp(key, event);
+        this.keyboardState.keys.setPressed(key, false);
+      },
+    });
   }
   
   private setupUpdateLoop() {
@@ -26,4 +44,7 @@ export default abstract class Game {
   }
 
   protected abstract onUpdate(dt: number): void;
+
+  protected onKeyDown(key: InputKey, event?: KeyboardEvent) {}
+  protected onKeyUp(key: InputKey, event?: KeyboardEvent) {}
 }

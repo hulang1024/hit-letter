@@ -1,11 +1,35 @@
 import Game from "./Game";
+import { InputKey } from "./input/keys";
 
 export default class HitLetterGame extends Game {
-  private bottomY: number;
+  private isPuase: boolean = false;
 
   constructor() {
     super();
-    this.bottomY = document.body.offsetHeight;
+  }
+
+  onKeyDown(key: InputKey) {
+    switch (key) {
+      case InputKey.Up:
+        this.block.speedX = 0;
+        this.block.speedY = -100;
+        break;
+      case InputKey.Right:
+        this.block.speedX = 100;
+        this.block.speedY = 0;
+        break;
+      case InputKey.Down:
+        this.block.speedX = 0;
+        this.block.speedY = 100;
+        break;
+      case InputKey.Left:
+        this.block.speedX = -100;
+        this.block.speedY = 0;
+        break;
+      case InputKey.Enter:
+        this.isPuase = !this.isPuase;
+        break;
+    }
   }
 
   private block: {
@@ -13,12 +37,16 @@ export default class HitLetterGame extends Game {
     y: number,
     width: number,
     height: number,
-    speedY: number, // y的速度
-    accel: number, // 加速度
+    speedX: number,
+    speedY: number,
     el: HTMLElement | null,
   } = null;
 
   protected onUpdate(dt: number): void {
+    if (this.isPuase) {
+      return;
+    }
+
     let { block } = this;
     if (block == null) {
       // 如果block还没有创建，现在创建
@@ -28,8 +56,8 @@ export default class HitLetterGame extends Game {
         y: 0,
         width: 50,
         height: 50,
-        speedY: 0,
-        accel: 300,
+        speedX: 0,
+        speedY: 100,
         // 创建一个div
         el: document.createElement('div'),
       };
@@ -42,15 +70,11 @@ export default class HitLetterGame extends Game {
       document.body.appendChild(block.el);
     }
 
-    if (block.y < (this.bottomY - block.height)) {
-      // 如果还没落到底部
-      // 更新加速度
-      block.speedY += block.accel * dt;
-      // 更新y的位置
-      block.y = Math.min(block.y + block.speedY * dt, this.bottomY - block.height);
-      // 更新css变量
-      block.el.style.setProperty('--x', `${block.x}px`);
-      block.el.style.setProperty('--y', `${block.y}px`);
-    }
+    // 更新位置
+    block.x += block.speedX * dt;
+    block.y += block.speedY * dt;
+    // 更新css变量
+    block.el.style.setProperty('--x', `${block.x}px`);
+    block.el.style.setProperty('--y', `${block.y}px`);
   }
 }
