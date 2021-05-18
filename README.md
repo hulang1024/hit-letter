@@ -1,4 +1,4 @@
-# snake
+# hit letter
 
 ### 安装(或使用cnpm)
 ```shell
