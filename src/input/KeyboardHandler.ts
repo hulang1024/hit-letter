@@ -6,10 +6,10 @@ interface KeyboardHandle {
 
 export default class KeyboardHandler {
   constructor({ onKeyDown, onKeyUp }: { onKeyDown: KeyboardHandle, onKeyUp: KeyboardHandle }) {
-    document.addEventListener('keydown', (event: KeyboardEvent) => {
+    window.addEventListener('keydown', (event: KeyboardEvent) => {
       onKeyDown(this.inputKeyFromKeyboardEvent(event), event);
     });
-    document.addEventListener('keyup', (event: KeyboardEvent) => {
+    window.addEventListener('keyup', (event: KeyboardEvent) => {
       onKeyUp(this.inputKeyFromKeyboardEvent(event), event);
     });
   }
@@ -19,7 +19,7 @@ export default class KeyboardHandler {
       if (event.key.length == 1) {
         const keyCharCode = event.key.toUpperCase().charCodeAt(0);
         if (65 <= keyCharCode && keyCharCode <= 90) {
-          return InputKey.A + (keyCharCode - 65);
+          return (InputKey.A + (keyCharCode - 65)) as InputKey;
         }
       }
       switch (event.key) {
@@ -40,7 +40,7 @@ export default class KeyboardHandler {
       }
     } else if (event.keyCode !== undefined) {
       if (65 <= event.keyCode && event.keyCode <= 90) {
-        return InputKey.A + (event.keyCode - 65);
+        return (InputKey.A + (event.keyCode - 65)) as InputKey;
       }
 
       switch (event.keyCode) {
