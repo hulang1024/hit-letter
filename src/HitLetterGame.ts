@@ -40,7 +40,7 @@ export default class HitLetterGame extends Game {
 
     TWEEN.update(dt);
 
-    for (let i = 0, cnt = this.gameDuration / 10 - this.hitLetterManager.count(); i < cnt; i++) {
+    for (let cnt = this.gameDuration / 10 - this.hitLetterManager.count(); cnt > 0; cnt--) {
       this.hitLetterManager.create();
     }
     
