@@ -7,6 +7,9 @@ interface KeyboardHandle {
 export default class KeyboardHandler {
   constructor({ onKeyDown, onKeyUp }: { onKeyDown: KeyboardHandle, onKeyUp: KeyboardHandle }) {
     window.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.repeat) {
+        return;
+      }
       onKeyDown(this.inputKeyFromKeyboardEvent(event), event);
     });
     window.addEventListener('keyup', (event: KeyboardEvent) => {

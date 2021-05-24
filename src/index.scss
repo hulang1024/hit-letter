@@ -3,14 +3,42 @@ html,body {
   height: 100%;
   margin: 0px;
   padding: 0px;
+  background: #eee;
 }
 
-.block {
+.display-object {
   position: absolute;
   left: 0px;
   top: 0px;
   width: var(--width);
   height: var(--height);
   transform: translateX(var(--x)) translateY(var(--y));
-  background: orange;
+  background: #fff;
+}
+
+.hit-letter {
+  border-radius: 4px;
+  color: #fafafa;
+
+  text-align: center;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 18px;
+  line-height: var(--height);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  background: #6495ed;
+
+  opacity: 1;
+  transition: opacity 0.2s ease;
+
+  &.hit {
+    background: #11ff22;
+    opacity: 0;
+  }
+
+  &.disappear {
+    background: #ff1122;
+    opacity: 0;
+  }
 }
