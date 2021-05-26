@@ -42,3 +42,18 @@ html,body {
     opacity: 0;
   }
 }
+
+.plane {
+  background: orange;
+  transition: transform 0.1s ease;
+}
+
+.bullet {
+  border-radius: 100%;
+  background: gray;
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+
+  &.disappear {
+    opacity: 0;
+  }
+}

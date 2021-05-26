@@ -1,11 +1,11 @@
 export default abstract class DisplayObject {
-  private _x: number = 0;
+  private _x: number;
   public get x() { return this._x; }
   public set x(val) {
     this.setPosition(val, this._y);
   }
 
-  private _y: number = 0;
+  private _y: number;
   public get y() { return this._y; }
   public set y(val) {
     this.setPosition(this._x, val);
@@ -35,6 +35,7 @@ export default abstract class DisplayObject {
   constructor() {
     this._el = document.createElement('div');
     this._el.classList.add('display-object');
+    this.setPosition(0, 0);
     this.height = 20;
     this.width = 20;
   }
