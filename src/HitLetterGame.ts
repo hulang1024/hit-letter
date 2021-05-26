@@ -2,7 +2,8 @@ import Game from "./Game";
 import * as TWEEN from '@tweenjs/tween.js';
 import { InputKey } from "./input/keys";
 import { HitLetterManager } from "./hitLetter";
-import { BulletManager, Plane } from "./plane";
+import { Plane } from "./plane";
+import { BulletManager } from "./bullet";
 
 export default class HitLetterGame extends Game {
   private isPuase: boolean = false;
@@ -39,7 +40,6 @@ export default class HitLetterGame extends Game {
           const hitLetter = this.hitLetterManager.findHitLetterByChar(keyChar);
           if (hitLetter) {
             this.plane.attack(hitLetter);
-            // this.isPuase = true;
           }
         }
     }
@@ -53,12 +53,12 @@ export default class HitLetterGame extends Game {
 
     TWEEN.update();
 
+    this.hitLetterManager.onUpdate(dt);
+
     this.gameDuration += dt;
 
     for (let cnt = this.gameDuration / 10 - this.hitLetterManager.count(); cnt > 0; cnt--) {
       this.hitLetterManager.createHitLetter();
     }
-    
-    this.hitLetterManager.onUpdate(dt);
   }
 }

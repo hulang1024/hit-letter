@@ -41,11 +41,11 @@ export default abstract class DisplayObject {
   }
 
   public setPosition(x: number, y: number) {
-    if (this.x != x) {
+    if (this._x != x) {
       this._x = x;
       this.el.style.setProperty('--x', `${x}px`);
     }
-    if (this.y != y) {
+    if (this._y != y) {
       this._y = y;
       this.el.style.setProperty('--y', `${y}px`);
     }

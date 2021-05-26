@@ -66,7 +66,7 @@ export class HitLetterManager {
     hitLetter.x = randomInt(0, this.game.stageWidth - hitLetter.width);
     hitLetter.y = -hitLetter.height;
     hitLetter.speedY = 2;
-    hitLetter.accel = 15;
+    hitLetter.accel = 18;
     hitLetter.maxY = this.game.stageHeight - 40 - hitLetter.height;
     hitLetter.isHit = false;
     hitLetter.isExpired = false;

@@ -12,14 +12,16 @@ html,body {
   top: 0px;
   width: var(--width);
   height: var(--height);
-  transform: translateX(var(--x)) translateY(var(--y));
+  transform: translate3d(var(--x), var(--y), 0);
   background: #fff;
 }
 
 .hit-letter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 4px;
   color: #fafafa;
-
   text-align: center;
   font-weight: bold;
   font-family: monospace;
