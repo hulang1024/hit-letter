@@ -39,7 +39,7 @@ export default class HitLetterGame extends Game {
           const keyChar = String.fromCharCode(65 + (key - InputKey.A));
           const hitLetter = this.hitLetterManager.findHitLetterByChar(keyChar);
           if (hitLetter) {
-            this.plane.attack(hitLetter);
+            this.plane.shot(hitLetter);
           }
         }
     }

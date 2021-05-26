@@ -30,9 +30,8 @@ html,body {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.2);
   background: #6495ed;
-
   opacity: 1;
-  transition: opacity 0.2s ease;
+  transition: background 0.2s,opacity 0.2s ease;
 
   &.hit {
     background: #11ff22;

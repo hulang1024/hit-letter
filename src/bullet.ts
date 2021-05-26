@@ -1,10 +1,15 @@
+import * as TWEEN from '@tweenjs/tween.js';
 import DisplayObject from "./DisplayObject";
 import DisplayObjectPool from "./DisplayObjectPool";
+import { HitLetter } from './hitLetter';
 import HitLetterGame from "./HitLetterGame";
 
 export class Bullet extends DisplayObject {
-  constructor() {
+  bulletManager: BulletManager;
+
+  constructor(bulletManager: BulletManager) {
     super();
+    this.bulletManager = bulletManager;
     this.el.classList.add('bullet');
 
     this.width = 14;
@@ -18,11 +23,31 @@ export class Bullet extends DisplayObject {
   disappear() {
     this.el.classList.add('disappear');
   }
+
+  shot(target: HitLetter) {
+    this.appear();
+    const tween = new TWEEN.Tween(this)
+    .to({ y: 0 }, 250)
+    .easing(TWEEN.Easing.Quadratic.Out)
+    .onUpdate(() => {
+      if (this.y <= target.y + target.height) {
+        this.disappear();
+        target.isHit = true;
+        this.bulletManager.recycle(this);
+        tween.stop();
+      }
+    })
+    .onComplete(() => {
+      this.disappear();
+      this.bulletManager.recycle(this);
+    })
+    .start();
+  }
 }
 
 export class BulletManager {
   private game: HitLetterGame;
-  private pool: DisplayObjectPool<Bullet> = new DisplayObjectPool(50, () => new Bullet());
+  private pool: DisplayObjectPool<Bullet> = new DisplayObjectPool(50, () => new Bullet(this));
   private bullets: Bullet[] = [];
 
   constructor(game: HitLetterGame) {
