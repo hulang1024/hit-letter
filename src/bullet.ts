@@ -24,29 +24,31 @@ export class Bullet extends DisplayObject {
     this.el.classList.add('disappear');
   }
 
-  shot(target: HitLetter) {
+  shot(target?: HitLetter) {
     this.appear();
     const tween = new TWEEN.Tween(this)
-    .to({ y: 0 }, 250)
-    .easing(TWEEN.Easing.Quadratic.Out)
-    .onUpdate(() => {
-      if (this.y <= target.y + target.height) {
-        this.disappear();
-        target.isHit = true;
-        this.bulletManager.recycle(this);
-        tween.stop();
-      }
-    })
-    .onComplete(() => {
+      .to({ y: 0 }, 250)
+      .easing(TWEEN.Easing.Quadratic.Out);
+    if (target) {
+      tween.onUpdate(() => {
+        if (this.y <= target.y + target.height) {
+          this.disappear();
+          target.isHit = true;
+          this.bulletManager.recycle(this);
+          tween.stop();
+        }
+      });
+    }
+    tween.onComplete(() => {
       this.disappear();
       this.bulletManager.recycle(this);
-    })
-    .start();
+    });
+    tween.start();
   }
 }
 
 export class BulletManager {
-  private game: HitLetterGame;
+  game: HitLetterGame;
   private pool: DisplayObjectPool<Bullet> = new DisplayObjectPool(50, () => new Bullet(this));
   private bullets: Bullet[] = [];
 
@@ -70,5 +72,6 @@ export class BulletManager {
     const index = this.bullets.findIndex((b) => b == bullet);
     this.bullets.splice(index, 1);
     this.pool.add(bullet);
+    
   }
 }

@@ -15,9 +15,7 @@ export class HitLetter extends DisplayObject {
 
   speedY: number; // y的速度
   accel: number; // 加速度
-  maxY: number;
   isHit: boolean;
-  isExpired: boolean;
 
   constructor() {
     super();
@@ -25,24 +23,22 @@ export class HitLetter extends DisplayObject {
   }
 
   appear() {
+    this.el.style.display = 'flex';
     this.el.classList.remove('hit', 'disappear');
   }
 
   disappear() {
     this.el.classList.add(this.isHit ? 'hit' : 'disappear');
+    setTimeout(() => {
+      this.el.style.display = 'none';
+    }, 220);
   }
 
   onUpdate(dt: number) {
-    // 如果还没落到底部
-    if (this.isHit || this.y >= this.maxY) {
-      this.isExpired = true;
-      this.disappear();
-    } else {
-      // 更新加速度
-      this.speedY += this.accel * dt;
-      // 更新y的位置
-      this.y = Math.min(this.y + this.speedY * dt, this.maxY);
-    }
+    // 更新加速度
+    this.speedY += this.accel * dt;
+    // 更新y的位置
+    this.y = this.y + this.speedY * dt;
   }
 }
 
@@ -65,11 +61,9 @@ export class HitLetterManager {
     hitLetter.height = 30;
     hitLetter.x = randomInt(0, this.game.stageWidth - hitLetter.width);
     hitLetter.y = -hitLetter.height;
-    hitLetter.speedY = 2;
+    hitLetter.speedY = 100;
     hitLetter.accel = 18;
-    hitLetter.maxY = this.game.stageHeight - 40 - hitLetter.height;
     hitLetter.isHit = false;
-    hitLetter.isExpired = false;
     hitLetter.char = letterChars[randomInt(0, 26)];
     hitLetter.appear();
 
@@ -91,7 +85,19 @@ export class HitLetterManager {
   onUpdate(dt: number) {
     this.hitLetters.forEach((hitLetter, index) => {
       hitLetter.onUpdate(dt);
-      if (hitLetter.isExpired) {
+      let isExpired = false;
+      if (hitLetter.isHit) {
+        isExpired = true;
+      } else if (hitLetter.y >= this.game.stageHeight - hitLetter.height) {
+        isExpired = true;
+      } else if (hitLetter.y >= this.game.fort.y - hitLetter.height) {
+        if (this.game.fort.isCollision(hitLetter)) {
+          isExpired = true;
+        }
+      }
+
+      if (isExpired) {
+        hitLetter.disappear();
         this.hitLetters.splice(index, 1);
         this.pool.add(hitLetter);
       }

@@ -4,6 +4,7 @@ html,body {
   margin: 0px;
   padding: 0px;
   background: #eee;
+  overflow: hidden;
 }
 
 .display-object {
@@ -50,11 +51,20 @@ html,body {
 }
 
 .bullet {
+  display: block;
   border-radius: 100%;
-  background: gray;
+  background: #666;
   box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
 
   &.disappear {
-    opacity: 0;
+    display: none;
+  }
+}
+
+.fort {
+  background: #aaa;
+
+  > .fort-block {
+    background: inherit;
   }
 }
